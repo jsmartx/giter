@@ -25,7 +25,7 @@ func Keygen(publicPath, privatePath string, bits int) error {
 		return err
 	}
 	// generate and write private key as PEM
-	privateFile, err := os.Create(privatePath)
+	privateFile, err := os.OpenFile(privatePath, os.O_RDWR|os.O_CREATE, 0600)
 	defer privateFile.Close()
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func Keygen(publicPath, privatePath string, bits int) error {
 	if err != nil {
 		return err
 	}
-	return fs.WriteFile(publicPath, ssh.MarshalAuthorizedKey(publicKey), 0755)
+	return fs.WriteFile(publicPath, ssh.MarshalAuthorizedKey(publicKey), 0600)
 }
 
 func JoinHostPort(host, port string) string {

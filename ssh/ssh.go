@@ -3,8 +3,8 @@ package ssh
 import (
 	"github.com/jsmartx/giter/util"
 	"github.com/kevinburke/ssh_config"
-	"os"
 	fs "io/ioutil"
+	"os"
 	"path/filepath"
 )
 
