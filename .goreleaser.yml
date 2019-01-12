@@ -1,0 +1,21 @@
+builds:
+  -
+    main: ./main.go
+    binary: giter
+    ldflags: -s -w -X main.version={{.Version}}
+    goos:
+      - darwin
+      - linux
+      - windows
+      - freebsd
+      - netbsd
+      - openbsd
+    goarch:
+      - amd64
+      - 386
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
