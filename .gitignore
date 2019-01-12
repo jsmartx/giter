@@ -21,3 +21,4 @@ Thumbs.db
 .settings
 vendor/
 giter
+dist/
