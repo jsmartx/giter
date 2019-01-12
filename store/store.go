@@ -187,7 +187,7 @@ func (s *Store) Update(hash string, u *User, opts *Options) error {
 		pwdPath := filepath.Join(keysDir, u.Hash()+".credential")
 		if opts.Password != "" {
 			data := []byte(u.Url(opts.Password))
-			if err := fs.WriteFile(pwdPath, data, 0755); err != nil {
+			if err := fs.WriteFile(pwdPath, data, 0600); err != nil {
 				return err
 			}
 		} else if hash != u.Hash() {
