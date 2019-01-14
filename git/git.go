@@ -1,12 +1,13 @@
 package git
 
 import (
-	"github.com/jsmartx/giter/util"
-	"github.com/mitchellh/go-homedir"
-	"gopkg.in/src-d/go-git.v4"
-	"gopkg.in/src-d/go-git.v4/config"
 	fs "io/ioutil"
 	"net/url"
+
+	"github.com/jsmartx/giter/util"
+	homedir "github.com/mitchellh/go-homedir"
+	git "gopkg.in/src-d/go-git.v4"
+	config "gopkg.in/src-d/go-git.v4/config"
 )
 
 type Git struct {

@@ -3,11 +3,12 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"strconv"
+
 	"github.com/jsmartx/giter/git"
 	"github.com/jsmartx/giter/store"
 	"github.com/jsmartx/giter/util"
 	"github.com/urfave/cli"
-	"strconv"
 )
 
 func Show(c *cli.Context) error {
@@ -29,7 +30,7 @@ func Show(c *cli.Context) error {
 	s := store.New()
 	users := s.List(name, true)
 	if len(users) == 0 {
-		return errors.New("User not found!")
+		return errors.New("user not found")
 	}
 	u := users[0]
 	if len(users) > 1 {

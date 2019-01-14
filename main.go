@@ -1,18 +1,19 @@
 package main
 
 import (
-	"github.com/jsmartx/giter/cmd"
-	"github.com/urfave/cli"
 	"log"
 	"os"
+
+	"github.com/jsmartx/giter/cmd"
+	"github.com/urfave/cli"
 )
 
-const version = "0.0.1"
+var version = "dev"
 
 func main() {
 	app := cli.NewApp()
 	app.Usage = "Git users manager"
-	app.Version = version
+	app.Version = Version
 	app.Commands = []cli.Command{
 		{
 			Name:    "list",

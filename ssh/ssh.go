@@ -1,11 +1,12 @@
 package ssh
 
 import (
-	"github.com/jsmartx/giter/util"
-	"github.com/kevinburke/ssh_config"
 	fs "io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/jsmartx/giter/util"
+	"github.com/kevinburke/ssh_config"
 )
 
 type Config struct {
@@ -18,10 +19,10 @@ func loadConfig() *ssh_config.Config {
 		return nil
 	}
 	f, err := os.Open(p)
-	defer f.Close()
 	if err != nil {
 		return nil
 	}
+	defer f.Close()
 	cfg, err := ssh_config.Decode(f)
 	if err != nil {
 		return nil
@@ -51,7 +52,9 @@ func New() *Config {
 	cfg = &ssh_config.Config{
 		Hosts: make([]*ssh_config.Host, 0),
 	}
-	saveConfig(cfg)
+	if err := saveConfig(cfg); err != nil {
+		panic(err)
+	}
 	return &Config{cfg: cfg}
 }
 

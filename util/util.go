@@ -7,9 +7,6 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"github.com/chzyer/readline"
-	"github.com/mitchellh/go-homedir"
-	"golang.org/x/crypto/ssh"
 	"io"
 	fs "io/ioutil"
 	"net"
@@ -17,6 +14,10 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+
+	"github.com/chzyer/readline"
+	homedir "github.com/mitchellh/go-homedir"
+	"golang.org/x/crypto/ssh"
 )
 
 func Keygen(publicPath, privatePath string, bits int) error {
@@ -26,10 +27,10 @@ func Keygen(publicPath, privatePath string, bits int) error {
 	}
 	// generate and write private key as PEM
 	privateFile, err := os.OpenFile(privatePath, os.O_RDWR|os.O_CREATE, 0600)
-	defer privateFile.Close()
 	if err != nil {
 		return err
 	}
+	defer privateFile.Close()
 	privatePEM := &pem.Block{
 		Type:  "RSA PRIVATE KEY",
 		Bytes: x509.MarshalPKCS1PrivateKey(privateKey),
@@ -48,18 +49,16 @@ func Keygen(publicPath, privatePath string, bits int) error {
 func JoinHostPort(host, port string) string {
 	if port != "" {
 		return fmt.Sprintf("%s:%s", host, port)
-	} else {
-		return host
 	}
+	return host
 }
 
 func SplitHostPort(host string) (string, string) {
 	h, p, err := net.SplitHostPort(host)
 	if err != nil {
 		return host, ""
-	} else {
-		return h, p
 	}
+	return h, p
 }
 
 var ScpRe = regexp.MustCompile(`^([a-zA-Z0-9_]+)@([a-zA-Z0-9._-]+):(.*)$`)
@@ -98,9 +97,8 @@ type PromptConfig struct {
 func (c *PromptConfig) String() string {
 	if c.Default != "" {
 		return fmt.Sprintf("%s(%s) ", c.Prompt, c.Default)
-	} else {
-		return c.Prompt
 	}
+	return c.Prompt
 }
 
 func CheckError(err error) {

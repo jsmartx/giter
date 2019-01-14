@@ -5,12 +5,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/jsmartx/giter/util"
 	fs "io/ioutil"
 	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/jsmartx/giter/util"
 )
 
 const ROOT = "~/.giter/"
@@ -31,18 +32,16 @@ type Options struct {
 func (u *User) Hash() string {
 	host := util.JoinHostPort(u.Host, u.Port)
 	url := fmt.Sprintf("%s://%s@%s", u.Scheme, u.Name, host)
-	hash := md5.New()
-	hash.Write([]byte(url))
-	return fmt.Sprintf("%x", hash.Sum(nil))
+	return fmt.Sprintf("%x", md5.Sum([]byte(url)))
 }
 
-func (u *User) Url(pwd string) string {
-	fullUrl := &url.URL{
+func (u *User) URL(pwd string) string {
+	fullURL := &url.URL{
 		Scheme: u.Scheme,
 		User:   url.UserPassword(u.Name, pwd),
 		Host:   util.JoinHostPort(u.Host, u.Port),
 	}
-	return fullUrl.String()
+	return fullURL.String()
 }
 
 func (u *User) KeyPath() (string, error) {
@@ -79,13 +78,15 @@ func loadConfig() *Config {
 		return nil
 	}
 	f, err := os.Open(cfgPath)
-	defer f.Close()
 	if err != nil {
 		return nil
 	}
+	defer f.Close()
 	var cfg Config
 	parser := json.NewDecoder(f)
-	parser.Decode(&cfg)
+	if err := parser.Decode(&cfg); err != nil {
+		panic(err)
+	}
 	return &cfg
 }
 
@@ -111,14 +112,16 @@ func New() *Store {
 	cfg = &Config{
 		Users: make([]*User, 0),
 	}
-	saveConfig(cfg)
+	if err := saveConfig(cfg); err != nil {
+		panic(err)
+	}
 	return &Store{c: cfg}
 }
 
 func (s *Store) check(user *User) error {
 	for _, u := range s.c.Users {
 		if u.Hash() == user.Hash() {
-			return errors.New("User already exist!")
+			return errors.New("user already exist")
 		}
 	}
 	return nil
@@ -149,7 +152,7 @@ func (s *Store) Add(u *User, opts *Options) error {
 		}
 	} else {
 		pwdPath := filepath.Join(keysDir, u.Hash()+".credential")
-		data := []byte(u.Url(opts.Password))
+		data := []byte(u.URL(opts.Password))
 		if err := fs.WriteFile(pwdPath, data, 0755); err != nil {
 			return err
 		}
@@ -186,7 +189,7 @@ func (s *Store) Update(hash string, u *User, opts *Options) error {
 	} else {
 		pwdPath := filepath.Join(keysDir, u.Hash()+".credential")
 		if opts.Password != "" {
-			data := []byte(u.Url(opts.Password))
+			data := []byte(u.URL(opts.Password))
 			if err := fs.WriteFile(pwdPath, data, 0600); err != nil {
 				return err
 			}
