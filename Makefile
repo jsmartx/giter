@@ -10,7 +10,7 @@ setup:
 # Build all files.
 build:
 	@echo "==> Building"
-	@go build
+	@go build -o bin/giter
 .PHONY: build
 
 # Run all the linters
