@@ -4,14 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jsmartx/giter/git"
-	"github.com/jsmartx/giter/ssh"
 	"github.com/jsmartx/giter/store"
 	"github.com/jsmartx/giter/util"
 	"github.com/urfave/cli"
 	"strconv"
 )
 
-func Use(c *cli.Context) error {
+func Show(c *cli.Context) error {
 	g, err := git.New(".")
 	if err != nil {
 		return err
@@ -50,21 +49,19 @@ func Use(c *cli.Context) error {
 		}
 		u = users[i-1]
 	}
-	if u.IsSSH() {
-		keyPath, err := u.KeyPath()
-		if err != nil {
-			fmt.Println(err)
-		}
-		s := ssh.New()
-		err = s.SetHost(&ssh.Host{
-			Key:          u.Host,
-			Hostname:     u.Host,
-			Port:         u.Port,
-			IdentityFile: keyPath,
-		})
-		if err != nil {
-			fmt.Println(err)
-		}
+	keyPath, err := u.KeyPath()
+	if err != nil {
+		return err
 	}
-	return g.SetUser(u.Name, u.Email)
+	if u.IsSSH() {
+		fmt.Printf("       User: %s\n", u.String())
+		fmt.Printf("      Email: %s\n", u.Email)
+		fmt.Printf("Private Key: %s\n", keyPath)
+		fmt.Printf(" Public Key: %s.pub\n", keyPath)
+	} else {
+		fmt.Printf("      User: %s\n", u.String())
+		fmt.Printf("     Email: %s\n", u.Email)
+		fmt.Printf("Credential: %s.credential\n", keyPath)
+	}
+	return nil
 }

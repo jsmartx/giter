@@ -19,3 +19,12 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
+brew:
+  github:
+    owner: jsmartx
+    name: homebrew-giter
+  folder: Formula
+  homepage:  https://github.com/jsmartx/
+  description: Git users manager
+  test: |
+    system "#{bin}/giter -v"

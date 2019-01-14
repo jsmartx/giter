@@ -26,6 +26,11 @@ func main() {
 			Action: cmd.Use,
 		},
 		{
+			Name:   "show",
+			Usage:  "Show git user detail",
+			Action: cmd.Show,
+		},
+		{
 			Name:    "add",
 			Aliases: []string{"new"},
 			Usage:   "Add one custom user config",
