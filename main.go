@@ -13,7 +13,7 @@ var version = "dev"
 func main() {
 	app := cli.NewApp()
 	app.Usage = "Git users manager"
-	app.Version = Version
+	app.Version = version
 	app.Commands = []cli.Command{
 		{
 			Name:    "list",
