@@ -40,5 +40,8 @@ snapcraft:
     Giter manages your several git users.
     It's easier to switch between multiple git users.
   grade: stable
-  confinement: classic
+  confinement: strict
   publish: true
+  apps:
+    giter:
+      plugs: ["home"]
