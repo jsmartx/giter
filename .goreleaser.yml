@@ -33,3 +33,12 @@ brew:
   description: Git users manager
   test: |
     system "#{bin}/giter -v"
+snapcraft:
+  name_template: '{{ .ProjectName }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  summary: Git users manager
+  description: |
+    Giter manages your several git users.
+    It's easier to switch between multiple git users.
+  grade: stable
+  confinement: classic
+  publish: true
