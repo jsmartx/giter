@@ -42,3 +42,6 @@ snapcraft:
   grade: stable
   confinement: strict
   publish: true
+  apps:
+    giter:
+      plugs: ["home"]
