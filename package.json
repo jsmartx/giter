@@ -1,0 +1,36 @@
+{
+  "name": "giter",
+  "version": "0.0.5",
+  "description": "Git users manager",
+  "main": "cli/giter.js",
+  "bin": {
+    "giter": "cli/giter.js"
+  },
+  "scripts": {
+    "postinstall": "node ./cli/install.js"
+  },
+  "files": [
+    "cli/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsmartx/giter.git"
+  },
+  "keywords": [
+    "git",
+    "users",
+    "config",
+    "manager",
+    "ssh"
+  ],
+  "author": "jsmartx.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jsmartx/giter/issues"
+  },
+  "homepage": "https://github.com/jsmartx/giter#readme",
+  "dependencies": {
+    "download": "^7.1.0",
+    "ora": "^3.0.0"
+  }
+}
